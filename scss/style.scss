@@ -1,4 +1,4 @@
-@import 'bourbon'; // http://bourbon.io/
+@import "bourbon/bourbon";
 
 @import '../partials/variables'; // colors, fonts etc...
 
@@ -48,23 +48,83 @@ h1 {
 
 /* -------------------------------- 
 
+Container Boxes 
+
+-------------------------------- */
+
+.container {
+  position: absolute;
+  top:0;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  display:block;
+  background:#000;
+}
+
+.box {
+  position: absolute;
+  display:block;
+  margin:2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:nth-child(1) {
+	  background:$color-1;
+	  top:0;
+	  bottom:50%;
+	  left:0;
+	  right:50%;
+	  margin:2% 1% 1% 2%;
+
+  }
+  &:nth-child(2) {
+	  background:$color-2;
+	  top:0;
+	  bottom:50%;
+	  left:50%;
+	  right:0%;
+	  margin:2% 2% 1% 1%;
+
+  }
+  &:nth-child(3) {
+	  background:$color-3;
+	  top:50%;
+	  bottom:0%;
+	  left:0;
+	  right:50%;
+	  margin:1% 1% 2% 2%;
+  }
+  &:nth-child(4) {
+	  background:$color-4;
+	  top:50%;
+	  bottom:0%;
+	  left:50%;
+	  right:0%;
+	  margin:1% 2% 2% 1%;
+  }
+
+
+}
+
+/* -------------------------------- 
+
 Patterns - reusable parts of our design
 
 -------------------------------- */
 
 .cd-btn {
-	display: inline-block;
-	padding: 1.4em 1.6em;
-	margin-bottom: 2em;
-	border-radius: 50em;
-	background-color: $color-2;
-	color: $color-3;
-	font-weight: bold;
-	font-size: 1.3rem;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	box-shadow: 0 1px 4px rgba(#000, .1);
+	&.full {
+		position: absolute;
+		top:0;
+		bottom:0px;
+		left:0px;
+		right:0px;
+		display:block;
+		border:solid 2px black;
 
+	}
 	.no-touch &:hover {
 		background-color: lighten($color-2, 5%);
 	}
@@ -117,12 +177,13 @@ body {
 
 main {
 	height: 100vh;
-	padding: 10px;
+	padding: 0px;
 	text-align: center;
+	background:$dark;
 	
 	.cd-main-content {
 		position: relative;
-		height: calc(100vh - 20px);
+		height: calc(100vh);
 
 		> div {
 			height: 100%;
@@ -131,14 +192,6 @@ main {
 			-webkit-overflow-scrolling: touch;
 		}
 
-		&::after, &::before {
-			/* these are the 2 gradient overlay at the top and bottom of the .cd-main-content - to indicate that you can scroll */
-			content: '';
-			position: absolute;
-			left: 0;
-			height: 50px;
-			width: 100%;
-		}
 
 		&::before {
 			top: 0;
@@ -199,10 +252,10 @@ main {
 	}
 
 	@include MQ(M) {
-		padding: 20px;
+		
 
 		.cd-main-content {
-			height: calc(100vh - 40px);
+			height: calc(100vh);
 		}
 
 		&.cd-index > div {
