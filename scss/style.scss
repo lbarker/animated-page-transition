@@ -1,4 +1,4 @@
-@import "bourbon/bourbon";
+@import 'bourbon';
 
 @import '../partials/variables'; // colors, fonts etc...
 
@@ -123,10 +123,18 @@ Patterns - reusable parts of our design
 		right:0px;
 		display:block;
 		border:solid 2px black;
+		span {
+			 position: absolute;
+			  top: 50%;
+			  transform: translate(-50%,-50%);
+			  color:$white;
+			  font-size: golden-ratio(14px,  3);
+
+		}
 
 	}
 	.no-touch &:hover {
-		background-color: lighten($color-2, 5%);
+		background-color: $black;
 	}
 
 	.cd-about & {
@@ -134,6 +142,87 @@ Patterns - reusable parts of our design
 	}
 }
 
+.cd-btn-trigger  {
+	position: fixed;
+	z-index: 3;
+	right: 5%;
+	top: 20px;
+	height: 54px;
+	width: 54px;
+	background-color: $color-1;
+	border-radius: 50%;
+	
+	/* image replacement */
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+
+	.cd-btn-icon {
+		/* icon created in CSS */
+		position: absolute;
+		@include center; // mixin inside partials > _mixins.scss
+		width: 22px;
+		height: 2px;
+		background-color: $color-3;
+
+		&::before, &:after {
+			/* upper and lower lines of the menu icon */
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 50%;
+
+			height: 100%; 
+			background-color: inherit;
+
+			/* Force Hardware Acceleration in WebKit */
+			@include transform(translateZ(0));
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+
+		}
+
+		&::before {
+
+			@include transform-origin(right top);
+			@include transform(rotate(-45deg));
+		}
+
+		&::after {
+			@include transform-origin(right bottom);
+			@include transform(rotate(45deg));
+		}
+
+
+	}
+
+	.no-touch &:hover .cd-btn-icon::after {
+		@include transform(rotate(-55deg));
+	} 
+
+	.no-touch &:hover .cd-btn-icon::before {
+		@include transform(rotate(55deg));
+	}
+
+	svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	circle {
+		stroke-dashoffset: 0;
+		/* circle border animation */
+		@include transition(stroke-dashoffset $animation-duration - 0.3s 0s);
+	}
+
+	
+	@include MQ(L) {
+		top: 40px;
+	}
+	
+}
 /* -------------------------------- 
 
 Main Components 
@@ -150,7 +239,7 @@ body {
 		position: fixed;
 		left: 0;
 		background-color: $color-3;
-		z-index: 1;
+		z-index: 2;
 	
 		/* Force Hardware Acceleration */
 		@include backface-visibility(hidden);
@@ -176,11 +265,24 @@ body {
 }
 
 main {
+	position:relative;
+	z-index:1;
 	height: 100vh;
 	padding: 0px;
 	text-align: center;
-	background:$dark;
-	
+	background:$black;
+
+	/* Force Hardware Acceleration in WebKit */
+	@include transform(translateZ(0));
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	@include transition(transform $animation-duration);
+	@include transition-timing-function(cubic-bezier(.91,.01,.6,.99)); 
+
+	.navigation-is-open & {
+		@include transform(translateX(100%));
+	}
 	.cd-main-content {
 		position: relative;
 		height: calc(100vh);
@@ -203,7 +305,7 @@ main {
 
 		&.cd-index {
 			/* .cd-main-content basic style - index page */
-			background-color: $color-1;
+			background-color: $black;
 			/* vertically center its content */ 
 			display: table;
 			width: 100%;
@@ -225,7 +327,7 @@ main {
 
 		&.cd-about {
 			/* .cd-main-content basic style - about page */
-			background-color: $color-2;
+			background-color: $black;
 			
 			> div {
 				padding-top: 50px;
@@ -273,6 +375,268 @@ main {
 	}
 }
 
+.cd-nav-trigger {
+	position: fixed;
+	z-index: 3;
+	left: 5%;
+	top: 20px;
+	height: 54px;
+	width: 54px;
+	background-color: $color-1;
+	border-radius: 50%;
+	
+	/* image replacement */
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+
+	@include transition(transform $animation-duration - 0.2s);
+
+	.cd-nav-icon {
+		/* icon created in CSS */
+		position: absolute;
+		@include center; // mixin inside partials > _mixins.scss
+		width: 22px;
+		height: 2px;
+		background-color: $color-3;
+
+		&::before, &:after {
+			/* upper and lower lines of the menu icon */
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 100%;
+			height: 100%; 
+			background-color: inherit;
+
+			/* Force Hardware Acceleration in WebKit */
+			@include transform(translateZ(0));
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+
+			@include transition(transform $animation-duration - 0.2s, width $animation-duration - 0.2s, top .3s);
+		}
+
+		&::before {
+			@include transform-origin(right top);
+			@include transform(translateY(-6px));
+		}
+
+		&::after {
+			@include transform-origin(right bottom);
+			@include transform(translateY(6px));
+		}
+
+	}
+
+	.no-touch &:hover .cd-nav-icon::after {
+		top: 2px;
+	} 
+
+	.no-touch &:hover .cd-nav-icon::before {
+		top: -2px;
+	} 
+
+	svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	circle {
+		/* circle border animation */
+		@include transition(stroke-dashoffset $animation-duration - 0.3s 0s);
+	}
+
+	.navigation-is-open & {
+		/* rotate trigger when navigation becomes visible */
+		@include transform(rotate(180deg));
+
+		.cd-nav-icon::after, 
+		.cd-nav-icon::before {
+			/* animate arrow --> from hamburger to arrow */
+			width: 50%;
+			@include transition(transform $animation-duration - 0.2s, width $animation-duration - 0.2s);
+		}
+
+		.cd-nav-icon::before {
+			@include transform(rotate(45deg));
+		}
+
+		.cd-nav-icon::after {
+			@include transform(rotate(-45deg));
+		}
+
+		.no-touch &:hover .cd-nav-icon::after,
+		.no-touch &:hover .cd-nav-icon::before {
+			top: 0;
+		} 
+
+		circle {
+			stroke-dashoffset: 0;
+			@include transition(stroke-dashoffset $animation-duration - 0.3s 0.3s);
+		}
+	}
+
+	@include MQ(L) {
+		top: 40px;
+	}
+}
+
+
+.cd-nav {
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: darken($color-1,20%);
+	visibility: hidden;
+	@include transition(visibility 0s $animation-duration);
+
+	.cd-navigation-wrapper {
+		/* all navigation content */
+		height: 100%;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		padding: 40px 5% 40px calc(5% + 80px);
+		
+		/* Force Hardware Acceleration in WebKit */
+		@include transform(translateZ(0));
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+
+		@include transform(translateX(-50%));
+		@include transition(transform $animation-duration);
+		@include transition-timing-function(cubic-bezier(.86,.01,.77,.78));
+	}
+
+	.navigation-is-open & {
+		visibility: visible;
+		@include transition(visibility 0s 0s);
+		
+		.cd-navigation-wrapper {
+			@include transform(translateX(0));
+			@include transition(transform $animation-duration - 0.2s);
+			@include transition-timing-function(cubic-bezier(.82,.01,.77,.78));
+		}
+	}
+
+	h2 {
+		position: relative;
+		margin-bottom: 1.7em;
+		font-size: 1.3rem;
+		font-weight: 800;
+		color: darken($color-1, 15%);
+		text-transform: uppercase;
+
+		&::after {
+			/* bottom separation line */
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -20px;
+			height: 1px;
+			width: 60px;
+			background-color: currentColor;
+		}
+	}
+
+	.cd-primary-nav {
+		margin-top: 60px;
+
+		li {
+			margin: 1.6em 0;
+		}
+
+		a {
+			font-family: $secondary-font;
+			font-size: 2.4rem;
+			color: rgba($color-3, .3);
+			display: inline-block;
+
+			&.selected {
+				color: $color-3;
+			}
+
+			.no-touch &:hover {
+				color: $color-3;
+			}
+		}
+	}
+
+	.cd-contact-info {
+		margin-top: 80px;
+
+		li {
+			font-family: $secondary-font;
+			margin-bottom: 1.5em;
+			line-height: 1.2;
+			color: rgba($color-3, .3);
+		}
+
+		a {
+			color: $color-3;
+		}
+
+		span {
+			display: block;
+		}
+
+		li, a, span {
+			font-size: 1.6rem;
+		}
+		
+	}
+
+	@include MQ(L) {
+
+		.cd-navigation-wrapper {
+			padding: 62px 20%;
+			@include clearfix;
+		}
+
+		.cd-half-block {
+			@include column(.5); // see partials > _layout.scss
+		}
+
+		.cd-primary-nav {
+			margin-top: 0;
+		}
+
+		h2 {
+			font-size: 1.5rem;
+			margin-bottom: 5.6em;
+		}
+
+		.cd-primary-nav {
+
+			li {
+				margin: 2em 0;
+			}
+
+			a {
+				font-size: 4.4rem;
+			}
+			
+		}
+
+		.cd-contact-info {
+			margin-top: 120px;
+			text-align: right;
+
+			li {
+				margin-bottom: 2.4em;
+			}
+
+			li, a, span {
+				font-size: 2rem;
+			}
+		}
+	}
+}
 .cd-cover-layer {
 	/* layer that covers the content when the animation is triggered */
 	position: fixed;
@@ -282,6 +646,7 @@ main {
 	opacity: 0;
 	visibility: hidden;
 	background-color: $color-1;
+	z-index:1;
 	@include transition(opacity 0.4s 0.4s, visibility 0s 0.8s);
 
 	.cd-about & {

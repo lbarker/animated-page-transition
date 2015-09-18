@@ -14,7 +14,9 @@ module.exports = function(grunt) {
       sass: {
           development: {
               options: {
-                compress: false,  //minifying the result
+                // includePaths: require('node-bourbon').with('other/path', 'another/path') 
+                // - or - 
+                loadPath: require('node-bourbon').includePaths
               },
               files: {
                 //compiling frontend.less into frontend.css
